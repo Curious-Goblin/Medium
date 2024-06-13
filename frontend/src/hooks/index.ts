@@ -13,20 +13,41 @@ interface Blog {
 export const useBlog = ({ id }: { id: string }) => {
     const [loading, setLoading] = useState(true)
     const [blog, setBlog] = useState<Blog>()
+    // useEffect(() => {
+    //     axios.get(`${BACKEND_URL}/api/v1/blog/${id}`, {
+    //         headers: {
+    //             Authorization: localStorage.getItem("token" || "")
+    //         }
+    //     })
+    //         .then(response => {
+    //             console.log("hii")
+    //             setBlog(response.data.blog);
+    //             console.log(response.data.blog)
+    //             setLoading(false)
+    //         })
+    //     console.log("lalksjdflajslf")
+    // }, [id])
+    
+    // console.log(localStorage.getItem("token"))
     useEffect(() => {
-        axios.get(`${BACKEND_URL}/api/v1/blog/${id}`, {
-            headers: {
-                Authorization: localStorage.getItem("token" || "")
-            }
-        })
-            .then(response => {
-                console.log("hii")
+        const fetchBlog = async () => {
+            try {
+                const response = await axios.get(`${BACKEND_URL}/api/v1/blog/${id}`, {
+                    headers: {
+                        "Authorization": localStorage.getItem("token") || ""
+                    }
+                });
+                console.log(localStorage.getItem("token"))
                 setBlog(response.data.blog);
-                console.log(response.data.blog)
-                setLoading(false)
-            })
-        console.log("lalksjdflajslf")
-    }, [id])
+                console.log(response.data.blog);
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching blog:", error);
+                setLoading(false);
+            }
+        };
+        fetchBlog();
+    }, [id]); 
     return {
         loading,
         blog

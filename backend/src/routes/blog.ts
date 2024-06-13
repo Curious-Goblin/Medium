@@ -145,7 +145,6 @@ blogRouter.get('/:id', async (c) => {
     }).$extends(withAccelerate())
 
     try {
-        const body = await c.req.json();
         const blog = await prisma.blogs.findFirst({
             where: {
                 id: c.req.param('id')

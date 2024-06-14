@@ -60,7 +60,7 @@ blogRouter.post('/', async (c) => {
         })
         c.status(200)
         return c.json({
-            blog: blog,
+            id:blog.id,
             message: "blog created!"
         })
     }

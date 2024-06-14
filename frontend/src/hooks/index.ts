@@ -13,22 +13,6 @@ interface Blog {
 export const useBlog = ({ id }: { id: string }) => {
     const [loading, setLoading] = useState(true)
     const [blog, setBlog] = useState<Blog>()
-    // useEffect(() => {
-    //     axios.get(`${BACKEND_URL}/api/v1/blog/${id}`, {
-    //         headers: {
-    //             Authorization: localStorage.getItem("token" || "")
-    //         }
-    //     })
-    //         .then(response => {
-    //             console.log("hii")
-    //             setBlog(response.data.blog);
-    //             console.log(response.data.blog)
-    //             setLoading(false)
-    //         })
-    //     console.log("lalksjdflajslf")
-    // }, [id])
-    
-    // console.log(localStorage.getItem("token"))
     useEffect(() => {
         const fetchBlog = async () => {
             try {
@@ -37,9 +21,7 @@ export const useBlog = ({ id }: { id: string }) => {
                         "Authorization": localStorage.getItem("token") || ""
                     }
                 });
-                console.log(localStorage.getItem("token"))
                 setBlog(response.data.blog);
-                console.log(response.data.blog);
                 setLoading(false);
             } catch (error) {
                 console.error("Error fetching blog:", error);
@@ -47,7 +29,7 @@ export const useBlog = ({ id }: { id: string }) => {
             }
         };
         fetchBlog();
-    }, [id]); 
+    }, [id]);
     return {
         loading,
         blog

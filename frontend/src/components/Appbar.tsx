@@ -1,10 +1,30 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Avatar } from "./BlogCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { BACKEND_URL } from "../config";
 
 export const Appbar = () => {
     const navigate = useNavigate();
+    const [name, setName] = useState("sp")
     const [click, setClick] = useState(false);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const response = await axios.get(`${BACKEND_URL}/api/v1/user/me`, {
+                    headers: {
+                        "Authorization": `${localStorage.getItem("token")}`
+                    }
+                });
+                const name:string = response.data.name;
+                setName(name)
+            } catch (error) {
+                console.error('Error fetching user:', error);
+            }
+        };
+        fetchUser();
+    })
 
     const handleAvatarClick = () => {
         setClick(prevClick => !prevClick);
@@ -31,7 +51,7 @@ export const Appbar = () => {
                             me-2 mb-2">New</button>
                     </Link>
                     <div onClick={handleAvatarClick}>
-                        <Avatar name="Sourabh Poddar" size="big" />
+                        <Avatar name={name} size="big" />
                     </div>
                 </div>
                 <div className={`${click ? "border bg-gray-100 pl-2 text-lg font-medium mt-3 p-2" : "hidden"}`}>

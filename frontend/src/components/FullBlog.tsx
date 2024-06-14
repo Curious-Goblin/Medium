@@ -14,7 +14,7 @@ interface Blog {
 export const FullBlog = ({ blog }: { blog: Blog | undefined }) => {
     return (
         <div>
-            <Appbar />
+            <Appbar/>
             <div className="flex justify-center pt-4 md:pt-12">
                 <div className="md:grid grid-cols-12  px-10 w-full max-w-screen-xl">
                     <div className="md:hidden pb-4">

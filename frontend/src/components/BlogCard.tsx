@@ -10,8 +10,7 @@ interface BlogCardProps {
 
 export const BlogCard = ({ authorName, title, content, publishedDate, id }: BlogCardProps) => {
     const [firstname, lastname] = authorName.split(" ");
-    const formattedAuthorName = lastname ?
-        `${firstname[0].toUpperCase() + firstname.slice(1)} ${lastname[0].toUpperCase() + lastname.slice(1)}` :
+    const formattedAuthorName = lastname ? `${firstname[0].toUpperCase() + firstname.slice(1)} ${lastname[0].toUpperCase() + lastname.slice(1)}` :
         `${firstname[0].toUpperCase() + firstname.slice(1)}`;
 
     return (

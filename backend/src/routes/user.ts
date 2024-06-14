@@ -118,7 +118,9 @@ userRouter.get('/me', async (c, next) => {
         const response = await prisma.user.findFirst({ where: { id: id } });
         if (response) {
             c.status(200);
-            return c.json({ signal: true });
+            return c.json({ signal: true,
+                name:response.name
+             });
         } else {
             return c.json({ signal: false });
         }

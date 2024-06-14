@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom"
 import { FullBlog } from "../components/FullBlog"
 import { useBlog } from "../hooks"
 import { Appbar } from "../components/Appbar"
-import {FullBlogSkeleton} from "../components/FullBlogSkeleton"
+import { FullBlogSkeleton } from "../components/FullBlogSkeleton"
 interface Blog {
     title: string,
     content: string,
@@ -21,7 +21,7 @@ export const Blog = () => {
             <Appbar/>
             <div>
                 <div>
-                    <FullBlogSkeleton/>
+                    <FullBlogSkeleton />
                 </div>
             </div>
         </div>

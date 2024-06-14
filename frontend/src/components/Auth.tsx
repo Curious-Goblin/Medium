@@ -18,6 +18,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
             localStorage.setItem("token", token)
             navigate("/blogs")
         } catch (e) {
+            alert("the inputs are wrong (password must be of atleast 8 characters)")
             console.log(e);
         }
     }

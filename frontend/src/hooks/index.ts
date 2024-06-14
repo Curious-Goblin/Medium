@@ -5,6 +5,7 @@ interface Blog {
     title: string,
     content: string,
     id?: string,
+    date: string,
     author: {
         name: string
     }

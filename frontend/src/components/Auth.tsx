@@ -4,7 +4,7 @@ import { SignupType } from "@curious-goblin/medium-blogging-website-common"
 import axios from "axios"
 import { BACKEND_URL } from "../config"
 export const Auth = ({ type }: { type: "signup" | "signin" }) => {
-    const navigate=useNavigate();
+    const navigate = useNavigate();
     const [postInputs, setPostInputs] = useState<SignupType>({
         name: "",
         email: "",
@@ -13,7 +13,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
 
     async function sendRequest() {
         try {
-            const response = await axios.post(`${BACKEND_URL}/api/v1/user/${type==="signup"?"signup":"signin"}`,postInputs)
+            const response = await axios.post(`${BACKEND_URL}/api/v1/user/${type === "signup" ? "signup" : "signin"}`, postInputs)
             const { token } = response.data
             localStorage.setItem("token", token)
             navigate("/blogs")
@@ -27,10 +27,10 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
             <div className="flex justify-center">
                 <div>
                     <div className="px-10">
-                        <div className="text-4xl font-extrabold">
+                        <div className="text-xl md:text-4xl font-extrabold flex justify-center">
                             {type === "signup" ? "Create an Account" : "Sign in to your Account"}
                         </div>
-                        <div className="text-slate-400 text-center font-normal text-xl mt-4">
+                        <div className="text-slate-400 text-center font-normal text-sm md:text-xl mt-4">
                             {type === "signup" ? "Already have an account ?" : "Don't have an Account"}
                             <Link className="pl-2 underline" to={type === "signup" ? "/signin" : "/signup"}>{type === "signup" ? "Sign in" : "Sign up"}</Link>
                         </div>
@@ -75,10 +75,10 @@ interface LabelledInputType {
 
 function LabelledInput({ label, placeholder, onChange, type }: LabelledInputType) {
     return (
-        <div className="mt-4">
+        <div className="mt-4 w-full">
             <label className="block mb-2 text-md text-black font-semibold text-gray-900">{label}</label>
             <input onChange={onChange} type={type || "text"} id="first_name"
-                className="w-full mt-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                className="w-full min-w-32 mt-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
                 block p-2.5 focus:outline-none" placeholder={placeholder} required />
         </div>
     )

@@ -46,6 +46,8 @@ blogRouter.post('/', async (c) => {
 
     try {
         const body = await c.req.json();
+        const date = new Date();
+        const formattedDate = formatDate(date);
         const { success } = createPostInput.safeParse(body)
         if (!success) {
             c.status(403)
@@ -55,12 +57,13 @@ blogRouter.post('/', async (c) => {
             data: {
                 title: body.title,
                 content: body.content,
+                date: formattedDate,
                 authorId: c.get('userId')
             }
         })
         c.status(200)
         return c.json({
-            id:blog.id,
+            id: blog.id,
             message: "blog created!"
         })
     }
@@ -79,6 +82,8 @@ blogRouter.put('/', async (c) => {
 
     try {
         const body = await c.req.json();
+        const date = new Date();
+        const formattedDate = formatDate(date);
         const { success } = updatePostInput.safeParse(body)
         if (!success) {
             c.status(403)
@@ -91,6 +96,7 @@ blogRouter.put('/', async (c) => {
             data: {
                 title: body.title,
                 content: body.content,
+                date: formattedDate
             }
         })
         c.status(200)
@@ -118,6 +124,7 @@ blogRouter.get('/bulk', async (c) => {
                 content: true,
                 title: true,
                 id: true,
+                date:true,
                 author: {
                     select: {
                         name: true
@@ -153,6 +160,7 @@ blogRouter.get('/:id', async (c) => {
                 content: true,
                 title: true,
                 id: true,
+                date:true,
                 author: {
                     select: {
                         name: true
@@ -173,3 +181,10 @@ blogRouter.get('/:id', async (c) => {
         })
     }
 })
+
+const formatDate = (date: Date): string => {
+    const day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date);
+    const month = new Intl.DateTimeFormat('en', { month: 'long' }).format(date);
+    const year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date);
+    return `${day} ${month} ${year}`;
+};

@@ -31,7 +31,7 @@ export const Blogs = () => {
                         title={blog.title}
                         content={blog.content}
                         id={blog.id || ""}
-                        publishedDate="12th June 2024"
+                        publishedDate={blog.date}
                     />)}
                 </div>
             </div>

@@ -53,7 +53,7 @@ export function Circle() {
 export function Avatar({ name, size = "small" }: { name: string, size?: string }) {
     const [firstname, lastname] = name.split(" ");
     return (
-        <div className={`relative p-3 inline-flex items-center justify-center ${size === "small" ? "w-6 h-6" : "w-10 h-10"} overflow-hidden bg-black rounded-full`}>
+        <div className={`cursor-pointer relative p-3 inline-flex items-center justify-center ${size === "small" ? "w-6 h-6" : "w-10 h-10"} overflow-hidden bg-black rounded-full`}>
             <span className={`${size === "small" ? "text-xs" : "text-md"} font-medium text-white`}>
                 {lastname ? firstname[0].toUpperCase() + lastname[0].toUpperCase() : firstname[0].toUpperCase()}
             </span>

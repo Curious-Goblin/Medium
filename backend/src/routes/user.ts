@@ -85,53 +85,48 @@ userRouter.post('/signin', async (c) => {
     }
 })
 
-userRouter.post('/me', async (c, next) => {
+userRouter.get('/me', async (c, next) => {
     try {
         const jwt = c.req.header("Authorization");
         if (!jwt) {
-            c.status(401)
-            return c.json({ error: "unauthorized" })
+            c.status(401);
+            return c.json({ error: "unauthorized" });
         }
-        const success = await verify(jwt, c.env.JWT_PASSWORD) as { id: string }
+        const success = await verify(jwt, c.env.JWT_PASSWORD) as { id: string };
         if (success) {
-            c.set("userId", success.id)
-            await next()
+            c.set("userId", success.id);
+            await next();
+        } else {
+            c.status(403);
+            return c.json({ error: "you are not authenticated" });
         }
-        else {
-            c.status(403)
-            return c.json({
-                error: "you are not authenticated"
-            })
-        }
-    }
-    catch (error: any) {
-        c.status(500)
-        return c.json({ message: error.message })
+    } catch (error: any) {
+        console.error("JWT Verification Error:", error);
+        c.status(500);
+        return c.json({ message: error.message });
     }
 }, async (c) => {
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate())
+    }).$extends(withAccelerate());
     try {
-        const id = c.get('userId')
-        const response = await prisma.user.findFirst({ where: { id: id } })
+        const id = c.get("userId");
+        if (!id) {
+            c.status(400); // Bad Request
+            return c.json({ signal: false, msg: "User ID not found" });
+        }
+        const response = await prisma.user.findFirst({ where: { id: id } });
         if (response) {
-            c.status(200)
-            c.json({
-                signal: true
-            })
+            c.status(200);
+            return c.json({ signal: true });
+        } else {
+            return c.json({ signal: false });
         }
-        else {
-            c.json({
-                signal: false
-            })
-        }
+    } catch (error: any) {
+        console.error("Database Query Error:", error);
+        c.status(500);
+        return c.json({ signal: false, msg: error.message });
+    } finally {
+        await prisma.$disconnect();
     }
-    catch (error) {
-        c.status(500)
-        c.json({
-            signal: false,
-            msg: error
-        })
-    }
-})
+});

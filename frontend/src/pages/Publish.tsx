@@ -13,7 +13,7 @@ export const Publish = () => {
         <div>
             <Appbar />
             <div className="flex justify-center pt-5 w-full">
-                <div className="max-w-screen-lg w-full">
+                <div className="max-w-screen-lg w-full px-5">
                     <input type="text" className="w-full mb-2 focus:outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm
                     rounded-lg p-2.5" placeholder="Title" onChange={(e) => {
                             setTitle(e.target.value)
@@ -33,7 +33,7 @@ export const Publish = () => {
                             })
                         navigate(`/blog/${response.data.id}`)
                     }} className="mt-4 inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white
-                                          bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800">
+                                  bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 hover:bg-blue-800">
                         Publish Post
                     </button>
                 </div>

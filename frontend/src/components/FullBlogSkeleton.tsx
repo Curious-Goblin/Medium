@@ -38,7 +38,7 @@ export const FullBlogSkeleton = () => {
                                 <div className="h-96 bg-gray-200 rounded mb-2.5"></div>
                             </div>
                         </div>
-                        <div className="hidden md:col-span-4 md:pl-16">
+                        <div className="hidden md:block col-span-4 pl-16">
                             <div className="text-xl text-slate-800 font-semibold">
                                 <div className="h-6 bg-gray-200 rounded-lg w-16 mb-2.5 ml-2"></div>
                             </div>

@@ -75,7 +75,7 @@ blogRouter.post('/', async (c) => {
     }
 })
 
-blogRouter.put('/', async (c) => {
+blogRouter.put('/:id', async (c) => {
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate())
@@ -91,12 +91,23 @@ blogRouter.put('/', async (c) => {
         }
         const blog = await prisma.blogs.update({
             where: {
-                id: body.id
+                id: c.req.param('id')
             },
             data: {
                 title: body.title,
                 content: body.content,
                 date: formattedDate
+            },
+            select: {
+                content: true,
+                title: true,
+                id: true,
+                date: true,
+                author: {
+                    select: {
+                        name: true
+                    }
+                }
             }
         })
         c.status(200)
@@ -112,7 +123,41 @@ blogRouter.put('/', async (c) => {
         })
     }
 })
+blogRouter.get('/', async (c) => {
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate())
 
+    try {
+        const blog = await prisma.blogs.findMany({
+            select: {
+                content: true,
+                title: true,
+                id: true,
+                date: true,
+                author: {
+                    select: {
+                        name: true
+                    }
+                }
+            },
+            where: {
+                authorId: c.get("userId")
+            }
+        })
+        c.status(200)
+        return c.json({
+            blog
+        })
+    }
+    catch (error: any) {
+        c.status(500)
+        c.error
+        return c.json({
+            message: error.message
+        })
+    }
+})
 blogRouter.get('/bulk', async (c) => {
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
@@ -124,7 +169,7 @@ blogRouter.get('/bulk', async (c) => {
                 content: true,
                 title: true,
                 id: true,
-                date:true,
+                date: true,
                 author: {
                     select: {
                         name: true
@@ -160,7 +205,7 @@ blogRouter.get('/:id', async (c) => {
                 content: true,
                 title: true,
                 id: true,
-                date:true,
+                date: true,
                 author: {
                     select: {
                         name: true

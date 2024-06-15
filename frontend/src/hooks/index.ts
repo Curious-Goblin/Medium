@@ -55,3 +55,22 @@ export const useBlogs = () => {
         loading, blogs
     }
 }
+
+export const useBlogUser = () => {
+    const [loading, setLoading] = useState(true)
+    const [blogs, setBlogs] = useState<Blog[]>([])
+    useEffect(() => {
+        axios.get(`${BACKEND_URL}/api/v1/blog`, {
+            headers: {
+                Authorization: localStorage.getItem("token")
+            }
+        })
+            .then(response => {
+                setBlogs(response.data.blog);
+                setLoading(false)
+            })
+    }, [])
+    return {
+        loading, blogs
+    }
+}

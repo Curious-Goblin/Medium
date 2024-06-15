@@ -9,6 +9,10 @@ This Blogging Website is a platform that allows users to create, edit, and share
 - **View Posts**: Users can view all blog posts and read individual posts in detail.
 - **User Dashboard**: Users can view their profile and manage their posts.
 
+## Live Link
+
+Access the live application here: [Medium](https://medium-sage-three.vercel.app/)
+
 ## Getting Started
 
 To get started with the Blogging Website, follow these steps:

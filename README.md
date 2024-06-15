@@ -1,4 +1,4 @@
-# Blogging Website
+# Medium
 
 This Blogging Website is a platform that allows users to create, edit, and share blog posts. Users can sign up, sign in, and interact with the content through a user-friendly interface.
 

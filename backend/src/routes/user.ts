@@ -90,48 +90,38 @@ userRouter.post('/signin', async (c) => {
     }
 })
 
-userRouter.get('/me', async (c, next) => {
+userRouter.get('/me', async (c) => {
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
     try {
         const jwt = c.req.header("Authorization");
         if (!jwt) {
             c.status(401);
             return c.json({ error: "unauthorized" });
         }
-        const success = await verify(jwt, c.env.JWT_PASSWORD) as { id: string };
-        if (success) {
-            c.set("userId", success.id);
-            await next();
-        } else {
+
+        const decoded = await verify(jwt, c.env.JWT_PASSWORD) as { id: string };
+        const userId = decoded?.id;
+
+        if (!userId) {
             c.status(403);
             return c.json({ error: "you are not authenticated" });
         }
-    } catch (error: any) {
-        console.error("JWT Verification Error:", error);
-        c.status(500);
-        return c.json({ message: error.message });
-    }
-}, async (c) => {
-    const prisma = new PrismaClient({
-        datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
-    try {
-        const id = c.get("userId");
-        if (!id) {
-            c.status(400); // Bad Request
-            return c.json({ signal: false, msg: "User ID not found" });
-        }
-        const response = await prisma.user.findFirst({ where: { id: id } });
-        if (response) {
+
+        const user = await prisma.user.findFirst({ where: { id: userId } });
+        if (user) {
             c.status(200);
             return c.json({
                 signal: true,
-                name: response.name
+                name: user.name,
             });
         } else {
             return c.json({ signal: false });
         }
     } catch (error: any) {
-        console.error("Database Query Error:", error);
+        console.error("JWT Verification or DB Error:", error);
         c.status(500);
         return c.json({ signal: false, msg: error.message });
     } finally {
